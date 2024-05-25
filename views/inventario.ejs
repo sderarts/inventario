@@ -9,20 +9,45 @@
         <th>Stock</th>
         <th>Ubicación</th>
         <th>Fecha de Vencimiento</th>
-        <th>Es kit</th>
+        <th>Distribuidor</th>
         <!-- <th>Valor</th> -->
     </tr>
-    <% prod.forEach(function(prod) { %>
+    <% productos.forEach(function(producto) { %>
         <tr>
-            <td><%= prod.id_pro %></td>
-            <td><%= prod.nombre_pro %></td>
-            <td><%= prod.descripcion_pro %></td>
-            <td><%= prod.cantidad_pro %></td>
-            <td><%= prod.ubicacion_pro %></td>
-            <td><%= new Date(prod.fecha_venc).toLocaleDateString() %></td>
-            <td><%= prod.kit_pro %></td>
-            <!-- <td><%= prod.precio_pro %></td> -->
+            <td><%= producto.id_pro %></td>
+            <td><%= producto.nombre_pro %></td>
+            <td><%= producto.descripcion_pro %></td>
+            <td><%= producto.cantidad_pro %></td>
+            <td><%= producto.ubicacion_pro %></td>
+            <td><%= new Date(producto.fecha_venc).toLocaleDateString() %></td>
+            <td><%= producto.nombre_prov + ' ' + producto.apellido_prov + ' (' + producto.empresa_prov + ')' %></td>
+            <!-- <td><%= producto.precio_pro %></td> -->
+        </tr>
+    <% }); %>
+</table><br>
+
+<h2>Inventario de kits</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>Kit</th>
+        <th>Precio</th>
+        <th>Productos</th>
+    </tr>
+    <% kits.forEach(function(kit) { %>
+        <tr>
+            <td><%= kit.id_kit %></td>
+            <td><%= kit.nombre_kit %></td>
+            <td><%= kit.precio_kit %></td>
+            <td>
+                <% kit.productos?.forEach(function(producto) { %>
+                    <%= producto.nombre_pro %><br>
+                <% }); %>
+            </td>
         </tr>
     <% }); %>
 </table>
+
+
+
 <a href="/">Index</a>

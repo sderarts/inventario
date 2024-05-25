@@ -141,20 +141,70 @@ app.post("/reg-prov", (req, res)=>{
     }
 })
 
-app.get("/inventario", (req,res)=>{
-    con.query("SELECT * FROM producto", function (err, result) {
+app.get("/inventario", (req, res) => {
+    // Fetch all products
+    con.query("SELECT p.*, pr.nombre_prov, pr.apellido_prov, pr.empresa_prov FROM producto p JOIN proveedor pr ON p.fk_prov = pr.id_prov", function (err, productos) {
         if (err) {
             console.error(err);
             res.status(500).send("Error retrieving productos");
-        } else {
-            console.log("Productos data:", result); // This will output the retrieved data
-            res.render('inventario.ejs', { prod : result });
+            return;
         }
+
+        // Fetch kits along with their associated products
+        con.query("SELECT kp.id_kit_producto, k.*, kp.fk_pro, p.nombre_pro FROM kit k JOIN kit_producto kp ON k.id_kit = kp.fk_kit JOIN producto p ON kp.fk_pro = p.id_pro", function (err, kits) {
+            if (err) {
+                console.error(err);
+                res.status(500).send("Error retrieving kits");
+                return;
+            }
+
+            // Restructure the data to group products by kit
+            const kitsWithProducts = [];
+
+            // Create an object to track processed kits
+            const processedKits = {};
+
+            // Iterate through each kit and associate products
+            kits.forEach(kit => {
+                // If the kit is not processed yet, add it to kitsWithProducts
+                if (!processedKits[kit.id_kit]) {
+                    kitsWithProducts.push({
+                        id_kit: kit.id_kit,
+                        nombre_kit: kit.nombre_kit,
+                        precio_kit: kit.precio_kit,
+                        productos: []
+                    });
+                    processedKits[kit.id_kit] = true; // Mark kit as processed
+                }
+
+                // Find the index of the current kit in kitsWithProducts
+                const index = kitsWithProducts.findIndex(k => k.id_kit === kit.id_kit);
+
+                // Add the current product to the productos array of the corresponding kit
+                kitsWithProducts[index].productos.push({ nombre_pro: kit.nombre_pro });
+            });
+
+            console.log("Productos data:", productos);
+            console.log("Kits data:", kitsWithProducts);
+            res.render('inventario.ejs', { productos: productos, kits: kitsWithProducts });
+        });
     });
 });
 
+
+
+
 app.get("/add-prod",(req,res)=>{
-    res.render("add-prod.ejs")
+    // Para poder ver la lista de proveedores
+    con.query("SELECT * FROM proveedor", function (err, result) {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Error retrieving proveedores");
+        } else {
+            console.log("Proveedores data:", result); // This will output the retrieved data
+            res.render('add-prod.ejs', { prov: result });
+        }
+    });
 })
 
 app.post("/buy-prod", (req,res) =>{
@@ -165,8 +215,9 @@ app.post("/buy-prod", (req,res) =>{
             cantidad_pro: req.body.stock,
             ubicacion_pro: req.body.ubi,
             fecha_venc: req.body.date,
-            kit_pro: req.body.kit,
-            precio_pro: req.body.precio
+            precio_pro: req.body.precio,
+            fk_emp : 3,
+            fk_prov : req.body.prov
         };
         const sql = 'INSERT INTO inventario.producto SET ?';
         con.query(sql, provData, (err, result) => {
@@ -180,6 +231,75 @@ app.post("/buy-prod", (req,res) =>{
 
     } catch (error) {
         console.error("Error registering prod:", error);
+        res.redirect('/');
+    }
+})
+
+// Muestra productos y kit
+app.get('/add-kit', (req, res) => {
+    con.query("SELECT * FROM producto", function (err, prodResult) {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Error retrieving productos");
+        } else {
+            console.log("Producto data:", prodResult); // This will output the retrieved data
+
+            // Execute second query to retrieve data from another table
+            con.query("SELECT * FROM kit", function (err, kitResult) {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send("Error retrieving kits");
+                } else {
+                    console.log("Kit data:", kitResult); // This will output the retrieved data
+                    res.render('add-kit.ejs', { prod: prodResult, kit: kitResult });
+                }
+            });
+        }
+    });
+});
+
+app.post('/new-kit', (req,res) =>{
+    try {
+        const kitData = {
+            nombre_kit: req.body.name,
+            precio_kit: req.body.precio,
+            fk_emp: 3,
+        };
+        const sql = 'INSERT INTO inventario.kit SET ?';
+        con.query(sql, kitData, (err, result) => {
+            if (err) {
+                console.error("Error inserting kit data:", err);
+                return res.redirect('/add-kit');
+            }
+            console.log("kit data inserted successfully:", result);
+            res.redirect('/add-kit');
+        });
+
+    } catch (error) {
+        console.error("Error registering kit:", error);
+        res.redirect('/');
+    }
+})
+
+// Asocia kit y productos en nueva tabla
+app.post('/prod-to-kit', (req,res)=>{
+    try {
+        const buildkitData = {
+            fk_kit: req.body.kit,
+            fk_pro: req.body.prod,
+        };
+        const sql = 'INSERT INTO inventario.kit_producto SET ?';
+        con.query(sql, buildkitData, (err, result) => {
+            if (err) {
+                console.error("Error inserting kit data:", err);
+                return res.redirect('/add-kit');
+            }
+            console.log("kit data inserted successfully:", result);
+            res.redirect('/add-kit');
+        });
+
+    } catch (error) {
+        console.error("Error registering kit:", error);
         res.redirect('/');
     }
 })

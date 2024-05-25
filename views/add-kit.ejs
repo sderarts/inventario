@@ -1,0 +1,39 @@
+<h1>Registrar un kit</h1>
+<form action="new-kit" method="POST">
+    <div>
+        <label for="name">Nombre del kit</label>
+        <input type="text" id="name" name="name">
+    </div>
+    <div>
+        <label for="precio">Precio kit</label>
+        <input type="number" id="precio" name="precio">
+    </div>
+    <button type="submit">Crear kit</button>
+</form>
+
+<br><br>
+
+<h2>Agregar productos a kit</h2>
+<form action="/prod-to-kit" method="POST">
+    <div>
+        <label for="kit">Selecciona el kit</label>
+        <select name="kit" id="kit">
+            <% kit.forEach(function(kit) { %>
+                <option value=<%=kit.id_kit %>><%= kit.nombre_kit %>
+                </option>
+                <% }); %>
+        </select>
+    </div>
+    <div>
+        <label for="prod">Selecciona un producto</label>
+        <select name="prod" id="prod">
+            <% prod.forEach(function(prod) { %>
+                <option value=<%=prod.id_pro %>><%= prod.nombre_pro %>
+                </option>
+                <% }); %>
+        </select>
+    </div>
+    <button type="submit">Guardar</button>
+</form>
+
+<a href="/">Index</a>
