@@ -1,0 +1,66 @@
+<h1>Proveedores</h1>
+<h2>Registrar un proveedor</h2>
+<form action="/reg-prov" method="POST">
+    <div>
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="lname">Apellido</label>
+        <input type="text" id="lname" name="lname" required>
+    </div>
+    <div>
+        <label for="empresa">Empresa</label>
+        <input type="text" id="empresa" name="empresa" required>
+    </div>
+    <div>
+        <label for="email">Correo</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="pago">Método pago</label>
+        <select name="pago" id="pago">
+            <option value=1>Transferencia</option>
+            <option value=2>Débito</option>
+            <option value=3>Crédito</option>
+        </select>
+    </div>
+    <div>
+        <label for="dir">Dirección</label>
+        <input type="text" id="dir" name="dir" required>
+    </div>
+    <div>
+        <label for="tel">Télefono</label>
+        <input type="number" id="tel" name="tel" required>
+    </div>
+    <button type="submit">Registrar</button>
+</form>
+
+<br>
+
+<h2>Proveedores</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Empresa</th>
+        <th>Correo</th>
+        <th>Terminos de pago</th>
+        <th>Dirección</th>
+        <th>Telefono</th>
+    </tr>
+    <% proveedor.forEach(function(proveedor) { %>
+        <tr>
+            <td><%= proveedor.id_prov %></td>
+            <td><%= proveedor.nombre_prov %></td>
+            <td><%= proveedor.apellido_prov %></td>
+            <td><%= proveedor.empresa_prov %></td>
+            <td><%= proveedor.correo_prov %></td>
+            <td><%= proveedor.terminos_pago %></td>
+            <td><%= proveedor.dir_prov %></td>
+            <td><%= proveedor.telefono_prov %></td>
+        </tr>
+    <% }); %>
+</table>
+<a href="/">Index</a>
