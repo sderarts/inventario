@@ -110,7 +110,7 @@ app.get("/prov", (req, res) => {
             res.status(500).send("Error retrieving proveedores");
         } else {
             console.log("Proveedor data:", result); // This will output the retrieved data
-            res.render('prov.ejs', { proveedor: result });
+            res.render('prov.ejs', { proveedor: result, user: req.session.user });
         }
     });
 });
@@ -186,7 +186,7 @@ app.get("/inventario", (req, res) => {
 
             console.log("Productos data:", productos);
             console.log("Kits data:", kitsWithProducts);
-            res.render('inventario.ejs', { productos: productos, kits: kitsWithProducts });
+            res.render('inventario.ejs', { productos: productos, kits: kitsWithProducts, user: req.session.user });
         });
     });
 });
@@ -226,7 +226,7 @@ app.post("/buy-prod", (req,res) =>{
                 return res.redirect('/add-prod');
             }
             console.log("Prod data inserted successfully:", result);
-            res.redirect('/add-prod');
+            res.redirect('/inventario');
         });
 
     } catch (error) {
@@ -272,7 +272,7 @@ app.post('/new-kit', (req,res) =>{
                 return res.redirect('/add-kit');
             }
             console.log("kit data inserted successfully:", result);
-            res.redirect('/add-kit');
+            res.redirect('/inventario');
         });
 
     } catch (error) {

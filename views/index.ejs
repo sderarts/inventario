@@ -1,19 +1,33 @@
-<% if (user) { %>
-    <p>Welcome, <%= user.nombre_emp %>
-    </p><br>
-    <a href="/prov">Proveedores</a><br>
-    <a href="/inventario">Inventario de productos</a><br>
-    <a href="/add-prod">Registrar productos</a><br>
-    <a href="/add-kit">Registrar kit</a><br>
-    <br>
-    <a href="/logout">Cerrar Sesión</a>
-    <% } else { %>
-        <p>Bienvenido usuario</p>
+<nav>
+    <% if (user) { %>
+        <header>
+            <h1>Welcome, <%= user.nombre_emp %>
+            </h1>
+        </header>
         <br>
-        <a href="/login">Inicia Sesión</a>
-        <a href="/register">Registrate</a>
-        <br>
-        <a href="/prov">Proveedores</a><br>
-        <a href="/inventario">Inventario de productos</a><br>
-        <% } %>
-
+        <center>
+            <div class="button-bar">
+                <button><a href="/prov">Proveedores</a></button>
+                <button><a href="/inventario">Inventario de productos</a></button>
+                <button><a href="/add-prod">Registrar productos</a></button>
+                <button><a href="/add-kit">Registrar kit</a></button>
+                <button><a href="/logout">Cerrar Sesión</a></button>
+            </div>
+        </center>
+        <% } else { %>
+            <center>
+                <header>
+                    <h1>Bienvenido usuario</h1>
+                </header>
+            </center>
+            <br>
+            <center>
+                <div class="button-bar">
+                    <button><a href="/login">Inicia Sesión</a></button>
+                    <button><a href="/register">Registrate</a></button>
+                    <button><a href="/prov">Proveedores</a></button>
+                    <button><a href="/inventario">Inventario de productos</a></button>
+                </div>
+            </center>
+            <% } %>
+</nav>
