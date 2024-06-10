@@ -28,6 +28,7 @@ con.connect(function (err) {
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => {
     res.render('index.ejs', { user: req.session.user });
@@ -216,7 +217,7 @@ app.post("/buy-prod", (req,res) =>{
             ubicacion_pro: req.body.ubi,
             fecha_venc: req.body.date,
             precio_pro: req.body.precio,
-            fk_emp : 3,
+            fk_emp : 13,
             fk_prov : req.body.prov
         };
         const sql = 'INSERT INTO inventario.producto SET ?';
@@ -263,7 +264,7 @@ app.post('/new-kit', (req,res) =>{
         const kitData = {
             nombre_kit: req.body.name,
             precio_kit: req.body.precio,
-            fk_emp: 3,
+            fk_emp: 13,
         };
         const sql = 'INSERT INTO inventario.kit SET ?';
         con.query(sql, kitData, (err, result) => {

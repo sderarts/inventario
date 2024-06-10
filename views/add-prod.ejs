@@ -1,40 +1,53 @@
-<h1>Registrar producto</h1>
-<form action="/buy-prod" method="POST">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+</head>
+<body>
+    <h1>Registrar producto</h1>
     <div>
-        <label for="name">Nombre producto</label>
-        <input type="text" id="name" name="name">
+        <form action="/buy-prod" method="POST">
+            <div>
+                <label for="name">Nombre producto</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div>
+                <label for="info">Descripción producto</label>
+                <input type="text" id="info" name="info">
+            </div>
+            <div>
+                <label for="stock">Cantidad</label>
+                <input type="number" id="stock" name="stock">
+            </div>
+            <div>
+                <label for="ubi">Ubicación producto</label>
+                <input type="text" id="ubi" name="ubi">
+            </div>
+            <div>
+                <label for="date">Fecha de vencimiento</label>
+                <input type="date" id="date" name="date">
+            </div>
+            <div>
+                <label for="prov">Proveedor</label>
+                <select name="prov" id="prov">
+                    <% prov.forEach(function(prov) { %>
+                        <option value=<%=prov.id_prov %>><%= prov.nombre_prov + " " + prov.apellido_prov + ",  " +
+                                prov.empresa_prov %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+            </div>
+            <div>
+                <label for="precio">Precio producto</label>
+                <input type="number" id="precio" name="precio">
+            </div>
+            <button type="submit">Crear producto</button>
+        </form>
     </div>
-    <div>
-        <label for="info">Descripción producto</label>
-        <input type="text" id="info" name="info">
-    </div>
-    <div>
-        <label for="stock">Cantidad</label>
-        <input type="number" id="stock" name="stock">
-    </div>
-    <div>
-        <label for="ubi">Ubicación producto</label>
-        <input type="text" id="ubi" name="ubi">
-    </div>
-    <div>
-        <label for="date">Fecha de vencimiento</label>
-        <input type="date" id="date" name="date">
-    </div>
-    <div>
-        <label for="prov">Proveedor</label>
-        <select name="prov" id="prov">
-            <% prov.forEach(function(prov) { %>
-                <option value=<%=prov.id_prov %>><%= prov.nombre_prov + " " + prov.apellido_prov + ",  " + prov.empresa_prov
-                        %>
-                </option>
-                <% }); %>
-        </select>
-    </div>
-    </div>
-    <div>
-        <label for="precio">Precio producto</label>
-        <input type="number" id="precio" name="precio">
-    </div>
-    <button type="submit">Comprar producto</button>
-</form>
-<a href="/">Index</a>
+    <a href="/">Index</a>
+</body>
+</html>

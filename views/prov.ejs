@@ -7,47 +7,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
     <%- include('index.ejs') %>
     <center><h1>Proveedores</h1></center>
     <center><h2>Registrar un proveedor</h2></center>
     <center>
-        <form action="/reg-prov" method="POST">
-            <div>
-                <label for="name">Nombre</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div>
-                <label for="lname">Apellido</label>
-                <input type="text" id="lname" name="lname" required>
-            </div>
-            <div>
-                <label for="empresa">Empresa</label>
-                <input type="text" id="empresa" name="empresa" required>
-            </div>
-            <div>
-                <label for="email">Correo</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div>
-                <label for="pago">Método pago</label>
-                <select name="pago" id="pago">
-                    <option value=1>Transferencia</option>
-                    <option value=2>Débito</option>
-                    <option value=3>Crédito</option>
-                </select>
-            </div>
-            <div>
-                <label for="dir">Dirección</label>
-                <input type="text" id="dir" name="dir" required>
-            </div>
-            <div>
-                <label for="tel">Télefono</label>
-                <input type="number" id="tel" name="tel" required>
-            </div>
-            <button type="submit">Registrar</button>
-        </form>
+        
+            <form class="form-horizontal" action="/reg-prov" method="POST">
+                <div class="form-group">
+                    <label for="name" class="control-label col-sm-2">Nombre</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="name" name="name" required >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lname" class="control-label col-sm-2">Apellido</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="lname" name="lname" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="empresa" class="control-label col-sm-2">Empresa</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="empresa" name="empresa" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label col-sm-2">Correo</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pago" class="control-label col-sm-2">Método pago</label>
+                    <select name="pago" id="pago">
+                        <option value=1>Transferencia</option>
+                        <option value=2>Débito</option>
+                        <option value=3>Crédito</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dir" class="control-label col-sm-2">Dirección</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="dir" name="dir" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tel" class="control-label col-sm-2">Télefono</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" id="tel" name="tel" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Registrar</button>
+                    </div>
+                </div>
+            </form>
+        
     </center>
     
 
