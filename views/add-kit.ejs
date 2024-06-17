@@ -5,47 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<html>
 <body>
-    <h1>Registrar un kit</h1>
-    <div>
+
+    <%- include('index.ejs') %>
+    <div class="container mt-3">
+        <h3>Registrar un nuevo kit</h3>
         <form action="new-kit" method="POST">
-            <div>
+            <div class="mb-3 mt-3">
                 <label for="name">Nombre del kit</label>
-                <input type="text" id="name" name="name">
+                <input class="form-control" type="text" id="name" name="name">
             </div>
-            <div>
+            <div class="mb-3 mt-3">
                 <label for="precio">Precio kit</label>
-                <input type="number" id="precio" name="precio">
+                <input class="form-control" type="number" id="precio" name="precio">
             </div>
-            <button type="submit">Crear kit</button>
+            <button type="submit" class="btn btn-primary">Crear kit</button>
         </form>
     </div>
     
     <br><br>
     
-    <h2>Agregar productos a kit</h2>
-    <div>
+    
+    <div class="container mt-3">
+        <h3>Vincular productos a un kit</h3>
         <form action="/prod-to-kit" method="POST">
-            <div>
+            <div class="mb-3 mt-3">
                 <label for="kit">Selecciona el kit</label>
-                <select name="kit" id="kit">
+                <select class="form-control form-control-sm" name="kit" id="kit">
                     <% kit.forEach(function(kit) { %>
                         <option value=<%=kit.id_kit %>><%= kit.nombre_kit %>
                         </option>
                         <% }); %>
                 </select>
             </div>
-            <div>
+            <div class="mb-3 mt-3">
                 <label for="prod">Selecciona un producto</label>
-                <select name="prod" id="prod">
+                <select class="form-control form-control-sm" name="prod" id="prod">
                     <% prod.forEach(function(prod) { %>
                         <option value=<%=prod.id_pro %>><%= prod.nombre_pro %>
                         </option>
                         <% }); %>
                 </select>
             </div>
-            <button type="submit">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>
     

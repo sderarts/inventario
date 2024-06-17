@@ -1,16 +1,38 @@
-<center>
-    <h1>Inicia sesión</h1>
-    <form action="/login" method="POST">
-        <div>
-            <label for="email">Correo</label>
-            <input type="email" id="email" name="email" required>
-        </div><br>
-        <div>
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required>
-        </div><br>
-        <button type="submit">Acceder</button>
-    </form>
-    <a href="/register">Registrate</a>
-    <a href="/">Index</a>
-</center>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/styles/login-register.css">
+</head>
+
+<body>
+    <div id="container">
+        <div class="caja">
+            <a href="/">Menu</a>
+            <a href="/register">Registrate</a>
+            <h1 style="color: white;">Inicia sesión</h1>
+            <img src="/images/logo1.jpeg" alt="">
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <p> Correo: </p>
+                    <input type="email" class="field" id="email" name="email" class="form-control" required>
+                </div><br>
+                <div class="form-group">
+                    <p>Contraseña: </p>
+                    <input type="password" class="field" id="password" name="password" class="form-control" required>
+                </div><br>
+                <p class="center-content">
+                    <input type="submit" class="btn " value="Acceder">
+                </p>
+
+            </form>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

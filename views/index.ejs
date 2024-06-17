@@ -1,33 +1,61 @@
-<nav>
-    <% if (user) { %>
-        <header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css"
+        integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar" style="background-color: #04AA6D;">
+
+        <% if (user) { %>
+
+
             <h1>Welcome, <%= user.nombre_emp %>
             </h1>
-        </header>
-        <br>
-        <center>
-            <div class="button-bar">
-                <button><a href="/prov">Proveedores</a></button>
-                <button><a href="/inventario">Inventario de productos</a></button>
-                <button><a href="/add-prod">Registrar productos</a></button>
-                <button><a href="/add-kit">Registrar kit</a></button>
-                <button><a href="/logout">Cerrar Sesión</a></button>
-            </div>
-        </center>
-        <% } else { %>
-            <center>
-                <header>
-                    <h1>Bienvenido usuario</h1>
-                </header>
-            </center>
+
+            <a class="navbar-brand" href="#">
+                <img src="/images/logo1.jpeg" width="60" height="60" class="d-inline-block align-top" alt="">
+            </a>
             <br>
             <center>
                 <div class="button-bar">
-                    <button><a href="/login">Inicia Sesión</a></button>
-                    <button><a href="/register">Registrate</a></button>
                     <button><a href="/prov">Proveedores</a></button>
                     <button><a href="/inventario">Inventario de productos</a></button>
+                    <button><a href="/add-prod">Registrar productos</a></button>
+                    <button><a href="/add-kit">Registrar kit</a></button>
+                    <button><a href="/add-etiqueta">Etiquetas</a></button>
+                    <button><a href="/logout">Cerrar Sesión</a></button>
                 </div>
             </center>
-            <% } %>
-</nav>
+            <% } else { %>
+                <center>
+
+
+                    <h1>Bienvenido usuario</h1>
+
+                </center>
+                <br><a class="navbar-brand" href="#">
+                    <img src="/images/logo1.jpeg" width="60" height="60" class="d-inline-block align-top" alt="">
+                </a>
+                <center>
+                    <div class="button-bar">
+                        <button><a href="/login">Inicia Sesión</a></button>
+                        <button><a href="/register">Registrate</a></button>
+                        <button><a href="/prov">Proveedores</a></button>
+                        <button><a href="/add-prod">Registrar productos</a></button>
+                        <button><a href="/add-kit">Registrar kit</a></button>
+                        <button><a href="/add-etiqueta">Etiquetas</a></button>
+                        <button><a href="/inventario">Inventario de productos</a></button>
+                    </div>
+                </center>
+                <% } %>
+    </nav>
+</body>
+
+</html>

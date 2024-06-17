@@ -3,63 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inventario de productos</title>
     <link rel="stylesheet" type="text/css" href="/styles/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
 </head>
 <body>
     <%- include('index.ejs') %>
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+        Tooltip on top
+    </button>
     <center><h2>Inventario de productos</h2></center>
-    <center><table>
-        <table border="1">
-            
+    <center>
+        <table border="1" id="table">
             <tr>
                 <th>id</th>
                 <th>Producto</th>
                 <th>Descripción</th>
                 <th>Stock</th>
                 <th>Ubicación</th>
+                <th>Categoría</th>
                 <th>Fecha de Vencimiento</th>
                 <th>Distribuidor</th>
+                <th>Etiquetas</th>
                 <!-- <th>Valor</th> -->
             </tr>
-    <% productos.forEach(function(producto) { %>
-        <tr>
-            <td><%= producto.id_pro %></td>
-            <td><%= producto.nombre_pro %></td>
-            <td><%= producto.descripcion_pro %></td>
-            <td><%= producto.cantidad_pro %></td>
-            <td><%= producto.ubicacion_pro %></td>
-            <td><%= new Date(producto.fecha_venc).toLocaleDateString() %></td>
-            <td><%= producto.nombre_prov + ' ' + producto.apellido_prov + ' (' + producto.empresa_prov + ')' %></td>
-            <!-- <td><%= producto.precio_pro %></td> -->
-        </tr>
-    <% }); %>
-</table></center><br>
-<center><h2>Inventario de kits</h2></center>
-    <center><table>
+            <% productos.forEach(function(producto) { %>
+                <tr>
+                    <td><%= producto.id_pro %></td>
+                    <td><%= producto.nombre_pro %></td>
+                    <td><%= producto.descripcion_pro %></td>
+                    <td><%= producto.cantidad_pro %></td>
+                    <td><%= producto.ubicacion_pro %></td>
+                    <td><%= producto.nombre_categoria %></td>
+                    <td ><div class="advice-given-class">
+                        <%= new Date(producto.fecha_venc).toLocaleDateString() %>
+                        <span class="tooltiptext">Product expires soon!</span></div>
+                    </td>
+                    <td><%= producto.nombre_prov + ' ' + producto.apellido_prov + ' (' + producto.empresa_prov + ')' %></td>
+                    <td>
+                        <% if (producto.etiquetas && producto.etiquetas.length) { %>
+                            <% producto.etiquetas.forEach(function(etiqueta) { %>
+                               <button class="button-12"><%= etiqueta %></button> <br>
+                            <% }); %>
+                        <% } else { %>
+                            
+                        <% } %>
+                    </td>
+
+                    <!-- <td><%= producto.precio_pro %></td> -->
+                </tr>
+            <% }); %>
+        </table>
+        
+    </center>
+    
+    <br>
+    <center><h2>Inventario de kits</h2></center>
+    <center>
         <table border="1">
-        <tr>
-            <th>id</th>
-            <th>Kit</th>
-            <th>Precio</th>
-            <th>Productos</th>
-        </tr>
-        <% kits.forEach(function(kit) { %>
             <tr>
-                <td><%= kit.id_kit %></td>
-                <td><%= kit.nombre_kit %></td>
-                <td><%= kit.precio_kit %></td>
-                <td>
-                    <% kit.productos?.forEach(function(producto) { %>
-                        <%= producto.nombre_pro %><br>
-                    <% }); %>
-                </td>
+                <th>id</th>
+                <th>Kit</th>
+                <th>Precio</th>
+                <th>Productos</th>
             </tr>
-        <% }); %>
-    </table></center>
-<a href="/">Index</a>
+            <% kits.forEach(function(kit) { %>
+                <tr>
+                    <td><%= kit.id_kit %></td>
+                    <td><%= kit.nombre_kit %></td>
+                    <td><%= kit.precio_kit %></td>
+                    <td>
+                        <% kit.productos?.forEach(function(producto) { %>
+                            <%= producto.nombre_pro %><br>
+                        <% }); %>
+                    </td>
+                </tr>
+            <% }); %>
+        </table>
+    </center>
+    <a href="/">Index</a>
+    <!-- <a href="/download-pdfReport">Descargar</a> -->
+    <a href="#" id="export-excel">Exportar a Excel</a>
+
+    <script>
+        document.querySelectorAll('.advice-given-class').forEach(function (element) {
+                // Get the date string from the inner text of the element
+                var dateString = element.innerText.trim();
+
+                // Extract day, month, and year from the date string
+                var parts = dateString.split('-');
+                var day = parseInt(parts[0], 10);
+                var month = parseInt(parts[1], 10) - 1; // Months are zero-based in JavaScript Date objects
+                var year = parseInt(parts[2], 10);
+
+                // Construct the date object
+                var fechaVencimiento = new Date(year, month, day);
+                var tooltipText = element.querySelector('.tooltiptext');
+
+                // Today's date
+                var today = new Date();
+                today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero for accurate comparison
+
+                // Thirty days before expiration
+                var thirtyDaysBeforeExpired = new Date(fechaVencimiento);
+                thirtyDaysBeforeExpired.setDate(fechaVencimiento.getDate() - 30);
+                thirtyDaysBeforeExpired.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero for accurate comparison
+
+                // Comparison
+                if (fechaVencimiento > today && thirtyDaysBeforeExpired <= today) {
+                    tooltipText.innerText = "Product expires soon!";
+                    tooltipText.style.visibility = 'visible';
+                    tooltipText.style.opacity = '1';
+                } else if (fechaVencimiento <= today) {
+                    tooltipText.innerText = "Product expired!";
+                    tooltipText.style.visibility = 'visible';
+                    tooltipText.style.opacity = '1';
+                } else {
+                    tooltipText.style.visibility = 'hidden';
+                    tooltipText.style.opacity = '0';
+                }
+
+                element.addEventListener('click', function () {
+                    tooltipText.style.visibility = (tooltipText.style.visibility === 'visible') ? 'hidden' : 'visible';
+                    tooltipText.style.opacity = (tooltipText.style.opacity === '1') ? '0' : '1';
+                });
+            });
+
+    </script>
+
+    <script>
+        document.getElementById("export-excel").addEventListener("click", function () {
+                var table = document.querySelector("table"); // Seleccionar la primera tabla en la página
+
+                // Convertir la tabla a una matriz de datos
+                var headers = [];
+                table.querySelectorAll("th").forEach(function (header) {
+                    headers.push(header.innerText);
+                });
+
+                // Extract table data
+                var data = [headers]; // Include headers as the first row
+                table.querySelectorAll("tr").forEach(function (row) {
+                    var rowData = [];
+                    row.querySelectorAll("td").forEach(function (cell) {
+                        rowData.push(cell.innerText);
+                    });
+                    data.push(rowData);
+                });
+                // Crear un libro de Excel con una sola hoja
+                var wb = XLSX.utils.book_new();
+                var ws = XLSX.utils.aoa_to_sheet(data);
+                XLSX.utils.book_append_sheet(wb, ws, "Inventario");
+
+                // Convertir el libro de Excel a un archivo binario
+                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+                // Crear un blob a partir del archivo binario
+                var blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+
+                // Descargar el archivo Excel
+                saveAs(blob, "inventory.xlsx");
+            });
+
+            // Función auxiliar para convertir la cadena a una matriz de bytes
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+        
+    </script>
+    
+
+
 </body>
 </html>
-
-
-
